@@ -34,6 +34,8 @@ namespace ConsoleCalc
                     return firstvalue / secondValue;
                 case Operation.Multiply:
                     return firstvalue * secondValue;
+                case Operation.DivRem:
+                    return firstvalue % secondValue;
                 case Operation.Unknow:
                     throw new Exception("unknown operation");
                 default:

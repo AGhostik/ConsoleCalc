@@ -28,16 +28,34 @@ namespace Tests
         }
 
         [Test]
-        public void Parse_ExpressionFirstValueIsAnotherExpression_ExpressionParsed()
+        public void Parse_SecondValueIsValue_ExpressionPlusValue()
         {
             var expressionEvaluator = new ExpressionEvaluator();
-            var input = "(1 + 2) - 1";  
+            var input = "(1 + 2) + 1";  
+            var expressionUnit = expressionEvaluator.Parse(input);
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
+        }
+
+        [Test]
+        public void Parse_FirstValueIsExpression_ExpressionPlusValue()
+        {
+            var expressionEvaluator = new ExpressionEvaluator();
+            var input = "(1 + 2) + 1";  
             var expressionUnit = expressionEvaluator.Parse(input);
             Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
         }
 
         [Test]
-        public void Parse_ExpressionSecondValueIsAnotherExpression_ExpressionParsed()
+        public void Parse_FirstValueIsValue_ValuePlusExpression()
+        {
+            var expressionEvaluator = new ExpressionEvaluator();
+            var input = "1 + (2 - 1)";  
+            var expressionUnit = expressionEvaluator.Parse(input);
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
+        }
+
+        [Test]
+        public void Parse_SecondValueIsExpression_ValuePlusExpression()
         {
             var expressionEvaluator = new ExpressionEvaluator();
             var input = "1 + (2 - 1)";  
