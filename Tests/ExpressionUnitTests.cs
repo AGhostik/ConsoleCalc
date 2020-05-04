@@ -7,6 +7,62 @@ namespace Tests
     public class ExpressionUnitTests
     {
         [Test]
+        public void TryParse_ExpressionValuesEqualInputValues_ExpressionParsed()
+        {
+            var input = "1 + 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(1, expressionUnit.FirstValue.GetResult());
+            Assert.AreEqual(2, expressionUnit.SecondValue.GetResult());
+        }
+
+        [Test]
+        public void TryParse_SecondValueIsValue_ExpressionPlusValue()
+        {
+            var input = "(1 + 2) + 1";  
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
+        }
+
+        [Test]
+        public void TryParse_FirstValueIsExpression_ExpressionPlusValue()
+        {
+            var input = "(1 + 2) + 1";  
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
+        }
+
+        [Test]
+        public void TryParse_FirstValueIsValue_ValuePlusExpression()
+        {
+            var input = "1 + (2 - 1)";  
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
+        }
+
+        [Test]
+        public void TryParse_SecondValueIsExpression_ValuePlusExpression()
+        {
+            var input = "1 + (2 - 1)";  
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.SecondValue.GetType());
+        }
+
+        [Test]
+        public void TryParse_ExpressionBothValueIsExpression_ExpressionParsed()
+        {
+            var input = "(1 + 5) * (2 - 1)";  
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
+            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.SecondValue.GetType());
+        }
+
+        [Test]
         public void GetValue_Addition_Integer()
         {
             var expressionUnit = new ExpressionUnit(new ValueUnit(1), Operation.Plus, new ValueUnit(2));
