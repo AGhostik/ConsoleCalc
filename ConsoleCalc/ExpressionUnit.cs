@@ -6,17 +6,17 @@ namespace ConsoleCalc
     /// <summary>
     /// Под этим понимается выражение вида: X [операция] Y
     /// </summary>
-    public class ExpressionUnit : IValueUnit
+    public class ExpressionUnit : IUnit
     {
-        public ExpressionUnit(IValueUnit firstValue, Operation operation, IValueUnit secondValue)
+        public ExpressionUnit(IUnit firstValue, Operation operation, IUnit secondValue)
         {
             FirstValue = firstValue;
             SecondValue = secondValue;
             Operation = operation;
         }
 
-        public IValueUnit FirstValue { get; }
-        public IValueUnit SecondValue { get; }
+        public IUnit FirstValue { get; }
+        public IUnit SecondValue { get; }
         public Operation Operation { get; }
 
         public decimal GetResult()
@@ -71,7 +71,7 @@ namespace ConsoleCalc
             }
         }
 
-        private static bool TryParseValueUnit(string value, out IValueUnit result)
+        private static bool TryParseValueUnit(string value, out IUnit result)
         {
             if (ValueUnit.TryParse(value, out var valueUnit))
             {

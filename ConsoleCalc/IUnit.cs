@@ -1,6 +1,6 @@
 ﻿namespace ConsoleCalc
 {
-    public interface IValueUnit
+    public interface IUnit
     {
         decimal GetResult();
     }
