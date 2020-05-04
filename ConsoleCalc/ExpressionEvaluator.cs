@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using ConsoleCalc.Extensions;
+using ConsoleCalc.Models;
 
 namespace ConsoleCalc
 {

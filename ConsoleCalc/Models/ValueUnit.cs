@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace ConsoleCalc
+namespace ConsoleCalc.Models
 {
     /// <summary>
     /// Под этим понимается значение слева или справа выражения, X или Y

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace ConsoleCalc
+namespace ConsoleCalc.Models
 {
     /// <summary>
     /// Под этим понимается выражение вида: X [операция] Y

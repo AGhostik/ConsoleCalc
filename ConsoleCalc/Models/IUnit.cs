@@ -1,4 +1,4 @@
-﻿namespace ConsoleCalc
+﻿namespace ConsoleCalc.Models
 {
     public interface IUnit
     {

@@ -1,4 +1,5 @@
 ﻿using ConsoleCalc;
+using ConsoleCalc.Models;
 using NUnit.Framework;
 
 namespace Tests

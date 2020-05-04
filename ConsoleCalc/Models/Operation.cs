@@ -1,4 +1,4 @@
-﻿namespace ConsoleCalc
+﻿namespace ConsoleCalc.Models
 {
     public enum Operation
     {
