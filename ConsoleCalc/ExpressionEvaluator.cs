@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
+using ConsoleCalc.Extensions;
 
 namespace ConsoleCalc
 {
@@ -13,7 +13,8 @@ namespace ConsoleCalc
 
         public string NormalizeInput(string input)
         {
-            var result = RemoveExcessSpacebar(input);
+            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign();
+
             return result;
         }
 
@@ -24,12 +25,7 @@ namespace ConsoleCalc
 
             return null;
         }
+
         
-        private string RemoveExcessSpacebar(string input)
-        {
-            var regex = new Regex("[ ]{2,}");
-            var result = regex.Replace(input, " ");
-            return result;
-        }
     }
 }
