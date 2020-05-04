@@ -7,7 +7,7 @@ namespace Tests
     public class ExpressionUnitTests
     {
         [Test]
-        public void TryParse_ExpressionValuesEqualInputValues_ExpressionParsed()
+        public void TryParse_ExpressionValuesEqualInputValues_ValueAndValue()
         {
             var input = "1 + 2";
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
@@ -17,7 +17,7 @@ namespace Tests
         }
 
         [Test]
-        public void TryParse_SecondValueIsValue_ExpressionPlusValue()
+        public void TryParse_SecondValueIsValue_ExpressionAndValue()
         {
             var input = "(1 + 2) + 1";  
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
@@ -26,7 +26,7 @@ namespace Tests
         }
 
         [Test]
-        public void TryParse_FirstValueIsExpression_ExpressionPlusValue()
+        public void TryParse_FirstValueIsExpression_ExpressionAndValue()
         {
             var input = "(1 + 2) + 1";  
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
@@ -35,7 +35,7 @@ namespace Tests
         }
 
         [Test]
-        public void TryParse_FirstValueIsValue_ValuePlusExpression()
+        public void TryParse_FirstValueIsValue_ExpressionAndValue()
         {
             var input = "1 + (2 - 1)";  
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
@@ -44,7 +44,7 @@ namespace Tests
         }
 
         [Test]
-        public void TryParse_SecondValueIsExpression_ValuePlusExpression()
+        public void TryParse_SecondValueIsExpression_ExpressionAndValue()
         {
             var input = "1 + (2 - 1)";  
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
@@ -53,7 +53,7 @@ namespace Tests
         }
 
         [Test]
-        public void TryParse_ExpressionBothValueIsExpression_ExpressionParsed()
+        public void TryParse_ExpressionBothValueIsExpression_ExpressionAndExpression()
         {
             var input = "(1 + 5) * (2 - 1)";  
             var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);

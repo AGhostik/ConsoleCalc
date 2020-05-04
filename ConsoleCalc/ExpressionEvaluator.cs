@@ -20,9 +20,7 @@ namespace ConsoleCalc
         public ExpressionUnit Parse(string input)
         {
             if (ExpressionUnit.TryParse(input, out var expressionUnit))
-            {
                 return expressionUnit;
-            }
 
             return null;
         }

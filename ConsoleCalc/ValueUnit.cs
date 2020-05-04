@@ -3,7 +3,7 @@
 namespace ConsoleCalc
 {
     /// <summary>
-    /// Под этим понимается значение слева или справа у выражения, X или Y
+    /// Под этим понимается значение слева или справа выражения, X или Y
     /// </summary>
     public class ValueUnit : IValueUnit
     {
