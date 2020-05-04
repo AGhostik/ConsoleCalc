@@ -47,7 +47,7 @@ namespace ConsoleCalc
         {
             expressionUnit = null;
 
-            var regex = new Regex("[(]{0,1}(?<firstValue>[-+*/% \\d]+)[)]{0,1} (?<operation>[-+*/%]) [(]{0,1}(?<secondValue>[-+*/% \\d]+)[)]{0,1}");
+            var regex = new Regex("[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
             var match = regex.Match(value);
 
             if (match.Success)
@@ -76,7 +76,7 @@ namespace ConsoleCalc
             }
             else
             {
-                throw new Exception("regex match is unsuccessfull");
+                throw new Exception($"regex match is unsuccessfull, value: \'{value}\'");
             }
         }
 

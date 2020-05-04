@@ -159,6 +159,16 @@ namespace Tests
             Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
             Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
         }
+
+        [Test]
+        public void TryParse_ExpressionBothValuesIsValueUnit_ValueAndValue_Negative()
+        {
+            var input = "-1 + -2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
+            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
+        }
         
         [Test]
         public void TryParse_FirstValueIsExpression_ExpressionAndValue()

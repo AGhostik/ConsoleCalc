@@ -21,7 +21,7 @@ namespace ConsoleCalc
 
         public static bool TryParse(string value, out ValueUnit valueUnit)
         {
-            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture,
+            if (decimal.TryParse(value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture,
                 out var result))
             {
                 valueUnit = new ValueUnit(result);
