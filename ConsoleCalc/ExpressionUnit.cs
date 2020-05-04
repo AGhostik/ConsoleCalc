@@ -52,22 +52,13 @@ namespace ConsoleCalc
 
             if (match.Success)
             {
-                if (!match.Groups.TryGetValue("firstValue", out var firstValueGroup))
-                    throw new Exception("MatchGroup.TryGetValue failed - firstValueGroup");
-                
-                if (!match.Groups.TryGetValue("operation", out var operationGroup))
-                    throw new Exception("MatchGroup.TryGetValue failed - operationGroup");
-                
-                if (!match.Groups.TryGetValue("secondValue", out var secondValueGroup))
-                    throw new Exception("MatchGroup.TryGetValue failed - secondValueGroup");
-
-                if (!TryParseValueUnit(firstValueGroup.Value, out var firstValue))
+                if (!TryParseValueUnit(match.Groups["firstValue"].Value, out var firstValue))
                     return false;
 
-                if (!TryParseOperation(operationGroup.Value, out var operation))
+                if (!TryParseOperation(match.Groups["operation"].Value, out var operation))
                     return false;
                 
-                if (!TryParseValueUnit(secondValueGroup.Value, out var secondValue))
+                if (!TryParseValueUnit(match.Groups["secondValue"].Value, out var secondValue))
                     return false;
 
                 expressionUnit = new ExpressionUnit(firstValue, operation, secondValue);
