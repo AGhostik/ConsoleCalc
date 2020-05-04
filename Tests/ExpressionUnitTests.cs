@@ -17,6 +17,51 @@ namespace Tests
         }
 
         [Test]
+        public void TryParse_PlusOperation_ValueAndValue()
+        {
+            var input = "1 + 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MinusOperation_ValueAndValue()
+        {
+            var input = "1 - 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MultiplyOperation_ValueAndValue()
+        {
+            var input = "1 * 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivideOperation_ValueAndValue()
+        {
+            var input = "1 / 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivRemainderOperation_ValueAndValue()
+        {
+            var input = "1 % 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
+        }
+
+        [Test]
         public void TryParse_SecondValueIsValue_ExpressionAndValue()
         {
             var input = "(1 + 2) + 1";  
@@ -53,6 +98,51 @@ namespace Tests
         }
 
         [Test]
+        public void TryParse_PlusOperation_ExpressionAndValue()
+        {
+            var input = "(1 - 5) + 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MinusOperation_ExpressionAndValue()
+        {
+            var input = "(1 * 8) - 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MultiplyOperation_ExpressionAndValue()
+        {
+            var input = "(1 - 0) * 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivideOperation_ExpressionAndValue()
+        {
+            var input = "(1 + 1) / 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivRemainderOperation_ExpressionAndValue()
+        {
+            var input = "(1 + 2) % 2";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
+        }
+
+        [Test]
         public void TryParse_ExpressionBothValueIsExpression_ExpressionAndExpression()
         {
             var input = "(1 + 5) * (2 - 1)";  
@@ -61,6 +151,52 @@ namespace Tests
             Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
             Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.SecondValue.GetType());
         }
+
+        [Test]
+        public void TryParse_PlusOperation_ExpressionAndExpression()
+        {
+            var input = "(1 + 5) + (2 - 1)";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MinusOperation_ExpressionAndExpression()
+        {
+            var input = "(1 + 5) - (2 - 1)";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_MultiplyOperation_ExpressionAndExpression()
+        {
+            var input = "(1 + 5) * (2 - 1)";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivideOperation_ExpressionAndExpression()
+        {
+            var input = "(1 + 5) / (2 - 1)";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
+        }
+
+        [Test]
+        public void TryParse_DivRemainderOperation_ExpressionAndExpression()
+        {
+            var input = "(1 + 5) % (2 - 1)";
+            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
+            Assert.IsTrue(isSuccessfull);
+            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
+        }
+
 
         [Test]
         public void GetValue_Addition_Integer()
