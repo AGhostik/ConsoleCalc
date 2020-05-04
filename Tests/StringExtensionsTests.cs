@@ -7,7 +7,7 @@ namespace Tests
     public class StringExtensionsTests
     {
         [Test]
-        public void NormalizeInput_AddSpacebars_DoNotHaveSpacebars()
+        public void AddSpacebars()
         {
             var input = "1+5";
             var result = input.AddSpacebars();
@@ -15,15 +15,7 @@ namespace Tests
         }
 
         [Test]
-        public void NormalizeInput_AddSpacebars_RemoveExcessLeadingSigns_DoNotHaveSpacebars()
-        {
-            var input = "1---5";
-            var result = input.RemoveExcessLeadingSign().AddSpacebars();
-            Assert.AreEqual("1 - 5", result);
-        }
-
-        [Test]
-        public void NormalizeInput_RemoveExcessLeadingSigns_HaveEvenNumberOfLeadingSign()
+        public void RemoveExcessLeadingSigns_HaveEvenNumberOfLeadingSign()
         {
             var input = "1 + ----5";
             var result = input.RemoveExcessLeadingSign();
@@ -31,7 +23,7 @@ namespace Tests
         }
 
         [Test]
-        public void NormalizeInput_RemoveExcessLeadingSigns_HaveOddNumberOfLeadingSign()
+        public void RemoveExcessLeadingSigns_HaveOddNumberOfLeadingSign()
         {
             var input = "1 + ---5";
             var result = input.RemoveExcessLeadingSign();
@@ -39,11 +31,19 @@ namespace Tests
         }
 
         [Test]
-        public void NormalizeInput_RemoveExcessSpacebar_HaveMultipleSpacebar()
+        public void RemoveExcessSpacebar()
         {
             var input = "1 +     5";
             var result = input.RemoveExcessSpacebar();
             Assert.AreEqual("1 + 5", result);
+        }
+
+        [Test]
+        public void RemoveExcessSpacebar_RemoveExcessLeadingSign_AddSpacebars()
+        {
+            var input = "--1/        ----5";
+            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars();
+            Assert.AreEqual("1 / 5", result);
         }
     }
 }
