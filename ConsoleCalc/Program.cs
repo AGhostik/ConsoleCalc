@@ -9,6 +9,8 @@ namespace ConsoleCalc
             Console.WriteLine("Hello Calc!");
             Console.WriteLine("Type \"exit\" to stop program");
             Console.WriteLine();
+
+            var expressionEvaluator = new ExpressionEvaluator();
             
             do
             {
@@ -19,7 +21,8 @@ namespace ConsoleCalc
 
                 try
                 {
-
+                    var result = expressionEvaluator.Evaluate(input);
+                    Console.WriteLine(result);
                 }
                 catch (Exception e)
                 {

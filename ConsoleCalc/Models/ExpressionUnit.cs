@@ -67,6 +67,7 @@ namespace ConsoleCalc.Models
             }
             else
             {
+                // лучше заменить на логирование
                 throw new Exception($"regex match is unsuccessfull, value: \'{value}\'");
             }
         }

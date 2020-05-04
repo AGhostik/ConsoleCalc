@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using ConsoleCalc.Extensions;
 using ConsoleCalc.Models;
 
@@ -7,26 +6,21 @@ namespace ConsoleCalc
 {
     public class ExpressionEvaluator
     {
-        public decimal Evaluate(string expression)
+        public decimal Evaluate(string input)
         {
-            return 0;
+            var normalizedInput = NormalizeInput(input);
+
+            if (ExpressionUnit.TryParse(normalizedInput, out var expressionUnit))
+                return expressionUnit.GetResult();
+
+            throw new Exception("Parsing Error");
         }
 
         public string NormalizeInput(string input)
         {
-            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign();
+            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars();
 
             return result;
         }
-
-        public ExpressionUnit Parse(string input)
-        {
-            if (ExpressionUnit.TryParse(input, out var expressionUnit))
-                return expressionUnit;
-
-            return null;
-        }
-
-        
     }
 }
