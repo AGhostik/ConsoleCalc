@@ -31,5 +31,10 @@ namespace ConsoleCalc
             valueUnit = null;
             return false;
         }
+
+        public override string ToString()
+        {
+            return _value.ToString(CultureInfo.InvariantCulture);
+        }
     }
 }

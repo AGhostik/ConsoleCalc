@@ -112,5 +112,34 @@ namespace ConsoleCalc
                     return false;
             }
         }
+
+        public override string ToString()
+        {
+            string operationString;
+
+            switch (Operation)
+            {
+                case Operation.Plus:
+                    operationString = "+";
+                    break;
+                case Operation.Minus:
+                    operationString = "-";
+                    break;
+                case Operation.Div:
+                    operationString = "/";
+                    break;
+                case Operation.Multiply:
+                    operationString = "*";
+                    break;
+                case Operation.DivRem:
+                    operationString = "%";
+                    break;
+                default:
+                    operationString = "?";
+                    break;
+            }
+
+            return $"({FirstValue} {operationString} {SecondValue})";
+        }
     }
 }
