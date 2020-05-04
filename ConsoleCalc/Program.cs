@@ -11,7 +11,7 @@ namespace ConsoleCalc
             Console.WriteLine();
 
             var expressionEvaluator = new ExpressionEvaluator();
-            
+
             do
             {
                 var input = Console.ReadLine();

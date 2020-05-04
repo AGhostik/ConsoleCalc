@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace ConsoleCalc.Models
 {
     /// <summary>
-    /// Под этим понимается выражение вида: X [операция] Y
+    ///     Под этим понимается выражение вида: X [операция] Y
     /// </summary>
     public class ExpressionUnit : IUnit
     {
@@ -47,7 +47,8 @@ namespace ConsoleCalc.Models
         {
             expressionUnit = null;
 
-            var regex = new Regex("[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
+            var regex = new Regex(
+                "[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
             var match = regex.Match(value);
 
             if (match.Success)
@@ -57,7 +58,7 @@ namespace ConsoleCalc.Models
 
                 if (!TryParseOperation(match.Groups["operation"].Value, out var operation))
                     return false;
-                
+
                 if (!TryParseValueUnit(match.Groups["secondValue"].Value, out var secondValue))
                     return false;
 
@@ -65,11 +66,9 @@ namespace ConsoleCalc.Models
 
                 return true;
             }
-            else
-            {
-                // лучше заменить на логирование
-                throw new Exception($"regex match is unsuccessfull, value: \'{value}\'");
-            }
+
+            // лучше заменить на логирование
+            throw new Exception($"regex match is unsuccessfull, value: \'{value}\'");
         }
 
         private static bool TryParseValueUnit(string value, out IUnit result)
@@ -79,12 +78,13 @@ namespace ConsoleCalc.Models
                 result = valueUnit;
                 return true;
             }
-            if (ExpressionUnit.TryParse(value, out var expressionUnit))
+
+            if (TryParse(value, out var expressionUnit))
             {
                 result = expressionUnit;
                 return true;
             }
-            
+
             result = null;
             return false;
         }

@@ -5,7 +5,7 @@ namespace ConsoleCalc.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// Пока что работает только на знаки "-"
+        ///     Пока что работает только на знаки "-"
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -17,15 +17,12 @@ namespace ConsoleCalc.Extensions
             {
                 if (match.Length % 2 > 0)
                     return regex.Replace(value, "-");
-                else
-                    return regex.Replace(value, "");
+                return regex.Replace(value, "");
             }
-            else
-            {
-                return value;
-            }
+
+            return value;
         }
-        
+
         public static string RemoveExcessSpacebar(this string value)
         {
             var regex = new Regex("[ ]{2,}");
@@ -38,10 +35,7 @@ namespace ConsoleCalc.Extensions
             var result = value;
             var valueLength = value.Length;
 
-            if (valueLength < 2)
-            {
-                return value;
-            }
+            if (valueLength < 2) return value;
 
             for (var i = 1; i < valueLength; i++)
             {
@@ -51,10 +45,8 @@ namespace ConsoleCalc.Extensions
 
                 // not a spacebar
                 if (previousCharType != 0 && currentCharType != 0)
-                {
                     // not a "-X" and not a "[operation] -X"
                     if (!(previousOfPreviousCharType > 0 && previousCharType == 2 && currentCharType == -1))
-                    {
                         // not a Digit characters
                         if (!(previousCharType == -1 && currentCharType == -1))
                         {
@@ -62,12 +54,10 @@ namespace ConsoleCalc.Extensions
                             valueLength++;
                             i++;
                         }
-                    }
-                }
-            } 
+            }
 
             return result;
-            
+
             int GetCharacterType(char value)
             {
                 switch (value)
