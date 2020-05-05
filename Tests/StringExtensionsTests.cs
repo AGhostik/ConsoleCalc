@@ -79,11 +79,11 @@ namespace Tests
         }
 
         [Test]
-        public void RemoveExcessSpacebar_RemoveExcessLeadingSign_AddSpacebars()
+        public void RemoveExcessSpacebar_RemoveExcessLeadingSign_AddSpacebars_AddBracers()
         {
-            var input = "--1/        ----5";
-            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars();
-            Assert.AreEqual("1 / 5", result);
+            var input = "--1/        ----5 + 4";
+            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars().AddBracers();
+            Assert.AreEqual("(1 / 5) + 4", result);
         }
     }
 }

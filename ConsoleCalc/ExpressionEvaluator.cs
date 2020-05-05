@@ -8,7 +8,7 @@ namespace ConsoleCalc
     {
         public decimal Evaluate(string input)
         {
-            var normalizedInput = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars();
+            var normalizedInput = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars().AddBracers();
 
             if (ExpressionUnit.TryParse(normalizedInput, out var expressionUnit))
                 return expressionUnit.GetResult();
