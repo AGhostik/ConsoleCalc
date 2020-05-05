@@ -23,6 +23,14 @@ namespace Tests
         }
 
         [Test]
+        public void AddBracers_MultiplyPlus_PlusInBracers()
+        {
+            var input = "1 * (5 + 2)";
+            var result = input.AddBracers();
+            Assert.AreEqual("1 * (5 + 2)", result);
+        }
+
+        [Test]
         public void AddBracers_MultiplyPlusMultiply()
         {
             var input = "1 * 5 + 2 * 9";
