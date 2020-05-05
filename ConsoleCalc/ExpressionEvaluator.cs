@@ -7,6 +7,17 @@ namespace ConsoleCalc
 {
     public class ExpressionEvaluator
     {
+        /// <summary>
+        /// Высчитывает ответ из текстового математического выражения
+        /// <para>Допустимые символы:</para>
+        /// <para>Цифры [0 - 9];</para>
+        /// <para>Знак точки для обозначения дробной части</para>
+        /// <para>Знаки арифметических операций: + - * / %</para>
+        /// <para>Круглые скобочки для обозначения приоритета одной операции над другой</para>
+        /// </summary>
+        /// <param name="input"></param>
+        /// <exception cref="Exception"></exception>
+        /// <returns></returns>
         public decimal Evaluate(string input)
         {
             var unexpectedCharacter = InputValidationService.FindUnexpectedCharacters(input).FirstOrDefault();
