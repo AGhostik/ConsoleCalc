@@ -59,11 +59,7 @@ namespace ConsoleCalc
         /// <returns></returns>
         public static Regex GetRegex_FindExpressionParts()
         {
-            return new Regex("(?<firstValue>(\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)) (?<operation>[-+*/%]) (?<secondValue>(\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+))");
-
-            return new Regex(
-                "[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
-            
+            return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d*( [-+*/%] -?\\d*\\.?\\d*)?\\))|(-?\\d*\\.?\\d*)) (?<operation>[-+*/%]) (?<secondValue>(\\(-?\\d*\\.?\\d*( [-+*/%] -?\\d*\\.?\\d*)?\\))|(-?\\d*\\.?\\d*))");
         }
     }
 }

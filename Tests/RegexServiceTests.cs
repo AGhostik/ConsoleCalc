@@ -51,34 +51,34 @@ namespace Tests
         public void FindExpressionParts_ValueDivRemValue()
         {
             var regex = RegexService.GetRegex_FindExpressionParts();
-            var input = "5 % 2";
+            var input = "50 % 221";
             var groups = regex.Match(input).Groups;
             
-            Assert.AreEqual("5", groups["firstValue"].Value);
+            Assert.AreEqual("50", groups["firstValue"].Value);
             Assert.AreEqual("%", groups["operation"].Value);
-            Assert.AreEqual("2", groups["secondValue"].Value);
+            Assert.AreEqual("221", groups["secondValue"].Value);
         }
 
         [Test]
         public void FindExpressionParts_ExpressionMinusExpression()
         {
             var regex = RegexService.GetRegex_FindExpressionParts();
-            var input = "(1 * 3) - (2 / 4)";
+            var input = "(1 * 3.1) - (2.5 / 4.01)";
             var groups = regex.Match(input).Groups;
             
-            Assert.AreEqual("(1 * 3)", groups["firstValue"].Value);
+            Assert.AreEqual("(1 * 3.1)", groups["firstValue"].Value);
             Assert.AreEqual("-", groups["operation"].Value);
-            Assert.AreEqual("(2 / 4)", groups["secondValue"].Value);
+            Assert.AreEqual("(2.5 / 4.01)", groups["secondValue"].Value);
         }
 
         [Test]
         public void FindExpressionParts_ValueDivExpression()
         {
             var regex = RegexService.GetRegex_FindExpressionParts();
-            var input = "3 / (2 / 4)";
+            var input = "3.9 / (2 / 4)";
             var groups = regex.Match(input).Groups;
             
-            Assert.AreEqual("3", groups["firstValue"].Value);
+            Assert.AreEqual("3.9", groups["firstValue"].Value);
             Assert.AreEqual("/", groups["operation"].Value);
             Assert.AreEqual("(2 / 4)", groups["secondValue"].Value);
         }
@@ -87,12 +87,12 @@ namespace Tests
         public void FindExpressionParts_ExpressionMultiplyValue()
         {
             var regex = RegexService.GetRegex_FindExpressionParts();
-            var input = "(1 * 3) * 4";
+            var input = "(1000 * 3) * 4321.1";
             var groups = regex.Match(input).Groups;
             
-            Assert.AreEqual("(1 * 3)", groups["firstValue"].Value);
+            Assert.AreEqual("(1000 * 3)", groups["firstValue"].Value);
             Assert.AreEqual("*", groups["operation"].Value);
-            Assert.AreEqual("4", groups["secondValue"].Value);
+            Assert.AreEqual("4321.1", groups["secondValue"].Value);
         }
     }
 }
