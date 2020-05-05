@@ -16,6 +16,8 @@ namespace ConsoleCalc
             {
                 var input = Console.ReadLine();
 
+                if (string.IsNullOrEmpty(input?.ToLowerInvariant()))
+                    continue;
                 if (input?.ToLowerInvariant() == "exit")
                     break;
 
