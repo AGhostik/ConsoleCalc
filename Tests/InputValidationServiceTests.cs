@@ -12,6 +12,8 @@ namespace Tests
         // ) - LeftBracket
         // по названию стороны, в которую открыта скобочка
 
+        //todo: добавить поиск незавершенных выражений, анпример "1 + 3 * "
+
         [Test]
         public void FindUnexpectedCharacters_NoErrors_NoUnexpectedCharacters()
         {
