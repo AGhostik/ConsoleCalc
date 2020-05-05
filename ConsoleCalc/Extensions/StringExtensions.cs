@@ -13,7 +13,7 @@ namespace ConsoleCalc.Extensions
         /// <returns></returns>
         public static string RemoveExcessLeadingSign(this string value)
         {
-            var regex = new Regex("[-]{2,}");
+            var regex = RegexService.GetRegex_FindMultipleMinusSymbol();
             var match = regex.Match(value);
             if (match.Success)
             {
@@ -27,20 +27,26 @@ namespace ConsoleCalc.Extensions
 
         public static string RemoveExcessSpacebar(this string value)
         {
-            var regex = new Regex("[ ]{2,}");
+            var regex = RegexService.GetRegex_FindMultipleSpacebars();
             var result = regex.Replace(value, " ");
             return result;
         }
 
         public static string AddBracers(this string value)
         {
-            var regex = new Regex("((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\")) [*/%] ((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\"))");
+            var regexMultiply = RegexService.GetRegex_FindExpessionForBracersAdding();
             
             var result = value;
-            var replacements = new Dictionary<string, string>(); // key = {"X"} , value = {1 + 1}
+
+            // key = {"X"} , value = {1 + 1}
+            var replacements = new Dictionary<string, string>();
             var replacementCounter = 0;
 
-            var matches = regex.Matches(result).ToArray();
+            //это все нужно для того чтобы каждую операцию закрыть в скобочки для парсера
+            //например: '1 * 5 + 3 * 2 + 1' => '((1 * 5) + (3 * 2)) + 1'
+
+            // поиск выражений с умножением, делением или остатком от деления, и замена на [числа в кавычках]
+            var matches = regexMultiply.Matches(result).ToArray();
             while (matches.Any())
             {
                 foreach (var match in matches)
@@ -48,17 +54,32 @@ namespace ConsoleCalc.Extensions
                     var replacementKey = $"\"{replacementCounter}\"";
                     replacementCounter++;
                     replacements.Add(replacementKey, match.Value);
-                    result = regex.Replace(result, m => replacementKey, 1, match.Index);
+                    result = regexMultiply.Replace(result, m => replacementKey, 1, match.Index);
                 }
 
-                matches = regex.Matches(result).ToArray();
+                matches = regexMultiply.Matches(result).ToArray();
             }
 
-            //todo: сюда можно добавить аналогичный Regex, только по середине не [*/%], а [-+]
-            //это для того чтобы каждую операцию закрыть в скобочки для парсера
-            //например: '1 * 5 + 3 * 2 + 1' => '((1 * 5) + (3 * 2)) + 1' или '(1 * 5) + ((3 * 2) + 1)'
-            //на самом деле тогда все выражение целиком будет закрыто в скобочки, то можно это удалить через string.Substring(1, length - 2)
+            //todo: эти два куска кода while{...} можно заменить на один приватный метод
+
+            // поиск выражений со сложением или вычитанием, и замена на [числа в кавычках]
+            var regexPlusMinus = RegexService.GetRegex_FindExpessionForBracersAdding(false);
+            matches = regexPlusMinus.Matches(result).ToArray();
+            while (matches.Any())
+            {
+                foreach (var match in matches)
+                {
+                    var replacementKey = $"\"{replacementCounter}\"";
+                    replacementCounter++;
+                    replacements.Add(replacementKey, match.Value);
+                    result = regexPlusMinus.Replace(result, m => replacementKey, 1, match.Index);
+                }
+
+                matches = regexPlusMinus.Matches(result).ToArray();
+            }
             
+            // востанавливаем выражения
+            // постепенно возвращаем на место [чисел в кавычках] выражения, дополнительно обрамляя их в скобочки
             var regexReplacements = new Regex("\"\\d\"");
             var replacementsMatches = regexReplacements.Matches(result).ToArray();
             while (replacementsMatches.Any())
@@ -74,7 +95,8 @@ namespace ConsoleCalc.Extensions
                 replacementsMatches = regexReplacements.Matches(result).ToArray();
             }
 
-            return result;
+            //на самом деле тогда все выражение целиком будет закрыто в скобочки, поэтому нужно их удалить с помощью string.Substring
+            return result.Substring(1, result.Length - 2);
         }
 
         public static string AddSpacebars(this string value)

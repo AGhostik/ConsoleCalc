@@ -7,9 +7,8 @@ namespace Tests
     public class StringExtensionsTests
     {
         //todo: добавить:
-        //todo: 1. добавление скобочек "((x * y) + z) + w" или "(x * y) + (z + w)" - это нужно для того, чтобы парсеры работали корректно
-        //todo: 2. удаление лишних скобочек: "((x + y))"
-        //todo: 3. поиск ошибок, выдача номера символа с ошибкой "(x + y" - ErrorIndex=5, ErrorMessage="expected ')'"
+        //todo: удаление лишних скобочек: "((x + y))"
+        //todo: поиск ошибок, выдача номера символа с ошибкой "(x + y" - ErrorIndex=5, ErrorMessage="expected ')'"
 
         [Test]
         public void AddBracers_PlusMultiply()
