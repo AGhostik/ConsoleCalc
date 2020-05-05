@@ -94,5 +94,60 @@ namespace Tests
             Assert.AreEqual("*", groups["operation"].Value);
             Assert.AreEqual("4321.1", groups["secondValue"].Value);
         }
+
+        [Test]
+        public void FindExpessionForBracersAdding_FindMultiplyExpression()
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding();
+            var input = "10 * 3 + 1";
+            var matches = regex.Matches(input);
+
+            Assert.AreEqual(1, matches.Count);
+            Assert.AreEqual("10 * 3", matches[0].Value);
+        }
+
+        [Test]
+        public void FindExpessionForBracersAdding_FindMultiplyExpression_Decimal()
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding();
+            var input = "10.1 * 3.66 + 1";
+            var matches = regex.Matches(input);
+
+            Assert.AreEqual(1, matches.Count);
+            Assert.AreEqual("10.1 * 3.66", matches[0].Value);
+        }
+
+        [Test]
+        public void FindExpessionForBracersAdding_FindPlusExpression()
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding(false);
+            var input = "10 * 3 + 1";
+            var matches = regex.Matches(input);
+
+            Assert.AreEqual(1, matches.Count);
+            Assert.AreEqual("3 + 1", matches[0].Value);
+        }
+
+        [Test]
+        public void FindExpessionForBracersAdding_FindMultiplyExpression_OneValueReplaced()
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding();
+            var input = "13 + 66 * \"0\"";
+            var matches = regex.Matches(input);
+
+            Assert.AreEqual(1, matches.Count);
+            Assert.AreEqual("66 * \"0\"", matches[0].Value);
+        }
+
+        [Test]
+        public void FindExpessionForBracersAdding_FindPlusExpression_OneValueReplaced()
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding(false);
+            var input = "13 + \"1\" * \"2\"";
+            var matches = regex.Matches(input);
+
+            Assert.AreEqual(1, matches.Count);
+            Assert.AreEqual("13 + \"1\"", matches[0].Value);
+        }
     }
 }

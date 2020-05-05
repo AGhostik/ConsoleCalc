@@ -27,9 +27,9 @@ namespace ConsoleCalc
 
             // оставил два выражения new Regex(...), т.к. Resharper подсвечивает синтаксис паттерна
             if(operationIsMultiply)
-                return new Regex("((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\")) [*/%] ((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\"))");
+                return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?)) (?<operation>[*/%]) (?<secondValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))");
             else
-                return new Regex("((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\")) [-+] ((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\"))");
+                return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?)) (?<operation>[-+]) (?<secondValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))");
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace ConsoleCalc
         /// <returns></returns>
         public static Regex GetRegex_FindExpressionParts()
         {
-            return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d*( [-+*/%] -?\\d*\\.?\\d*)?\\))|(-?\\d*\\.?\\d*)) (?<operation>[-+*/%]) (?<secondValue>(\\(-?\\d*\\.?\\d*( [-+*/%] -?\\d*\\.?\\d*)?\\))|(-?\\d*\\.?\\d*))");
+            return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(-?\\d*\\.?\\d*)) (?<operation>[-+*/%]) (?<secondValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(-?\\d*\\.?\\d*))");
         }
     }
 }
