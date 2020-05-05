@@ -39,6 +39,9 @@ namespace ConsoleCalc.Extensions
 
             for (var i = 1; i < valueLength; i++)
             {
+                // todo: переделать этот ужас
+                // todo: сделать regex с паттерном типо \\d[-+/%*]*\\d
+
                 var previousOfPreviousCharType = i > 2 ? GetCharacterType(result[i - 3]) : -2;
                 var previousCharType = GetCharacterType(result[i - 1]);
                 var currentCharType = GetCharacterType(result[i]);
