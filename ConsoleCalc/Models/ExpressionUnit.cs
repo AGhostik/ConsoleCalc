@@ -47,8 +47,7 @@ namespace ConsoleCalc.Models
         {
             expressionUnit = null;
 
-            var regex = new Regex(
-                "[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
+            var regex = RegexService.GetRegex_FindExpressionParts();
             var match = regex.Match(value);
 
             if (match.Success)

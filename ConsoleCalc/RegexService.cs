@@ -49,5 +49,18 @@ namespace ConsoleCalc
         {
             return new Regex("[-]{2,}");
         }
+
+        /// <summary>
+        /// Для поиска частей внутри выражений типа 'X [действие] Y'
+        /// <para>X или Y - число, отрицательное число, другое аналогичное выражение 'A [действие] B'</para>
+        /// <para>[действие] - это +, -, *, / или %</para>
+        /// <para>Разделение на группы (match.Groups): [firstValue] [operation] [secondValue]</para>
+        /// </summary>
+        /// <returns></returns>
+        public static Regex GetRegex_FindExpressionParts()
+        {
+            return new Regex(
+                "[(]?(?<firstValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]? (?<operation>[-+*/%]) [(]?(?<secondValue>([-+*/%]|[ ]|([\\d]|(-\\d)))+)[)]?");
+        }
     }
 }
