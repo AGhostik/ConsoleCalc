@@ -6,10 +6,6 @@ namespace Tests
     [TestFixture]
     public class StringExtensionsTests
     {
-        //todo: добавить:
-        //todo: удаление лишних скобочек: "((x + y))"
-        //todo: поиск ошибок, выдача номера символа с ошибкой "(x + y" - ErrorIndex=5, ErrorMessage="expected ')'"
-
         [Test]
         public void AddBracers_PlusMultiply()
         {
