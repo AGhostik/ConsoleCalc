@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ConsoleCalc.Extensions
 {
@@ -27,6 +29,51 @@ namespace ConsoleCalc.Extensions
         {
             var regex = new Regex("[ ]{2,}");
             var result = regex.Replace(value, " ");
+            return result;
+        }
+
+        public static string AddBracers(this string value)
+        {
+            var regex = new Regex("((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\")) [*/%] ((\\(-?\\d+( [-+*/%] -?\\d+)?\\))|(-?\\d+)|(\"\\d\"))");
+            
+            var result = value;
+            var replacements = new Dictionary<string, string>(); // key = {"X"} , value = {1 + 1}
+            var replacementCounter = 0;
+
+            var matches = regex.Matches(result).ToArray();
+            while (matches.Any())
+            {
+                foreach (var match in matches)
+                {
+                    var replacementKey = $"\"{replacementCounter}\"";
+                    replacementCounter++;
+                    replacements.Add(replacementKey, match.Value);
+                    result = regex.Replace(result, m => replacementKey, 1, match.Index);
+                }
+
+                matches = regex.Matches(result).ToArray();
+            }
+
+            //todo: сюда можно добавить аналогичный Regex, только по середине не [*/%], а [-+]
+            //это для того чтобы каждую операцию закрыть в скобочки для парсера
+            //например: '1 * 5 + 3 * 2 + 1' => '((1 * 5) + (3 * 2)) + 1' или '(1 * 5) + ((3 * 2) + 1)'
+            //на самом деле тогда все выражение целиком будет закрыто в скобочки, то можно это удалить через string.Substring(1, length - 2)
+            
+            var regexReplacements = new Regex("\"\\d\"");
+            var replacementsMatches = regexReplacements.Matches(result).ToArray();
+            while (replacementsMatches.Any())
+            {
+                foreach (var match in replacementsMatches)
+                {
+                    result = regexReplacements.Replace(result, m =>
+                    {
+                        var replacement = replacements[match.Value];
+                        return $"({replacement})";
+                    }, 1, match.Index);
+                }
+                replacementsMatches = regexReplacements.Matches(result).ToArray();
+            }
+
             return result;
         }
 

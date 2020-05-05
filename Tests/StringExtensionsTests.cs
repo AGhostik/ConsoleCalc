@@ -12,6 +12,46 @@ namespace Tests
         //todo: 3. поиск ошибок, выдача номера символа с ошибкой "(x + y" - ErrorIndex=5, ErrorMessage="expected ')'"
 
         [Test]
+        public void AddBracers_PlusMultiply()
+        {
+            var input = "1 + 5 * 2";
+            var result = input.AddBracers();
+            Assert.AreEqual("1 + (5 * 2)", result);
+        }
+
+        [Test]
+        public void AddBracers_MultiplyPlus()
+        {
+            var input = "1 * 5 + 2";
+            var result = input.AddBracers();
+            Assert.AreEqual("(1 * 5) + 2", result);
+        }
+
+        [Test]
+        public void AddBracers_MultiplyPlusMultiply()
+        {
+            var input = "1 * 5 + 2 * 9";
+            var result = input.AddBracers();
+            Assert.AreEqual("(1 * 5) + (2 * 9)", result);
+        }
+
+        [Test]
+        public void AddBracers_BracersMultiplyMultiplyPlus()
+        {
+            var input = "(1 * 5) * 2 + 9";
+            var result = input.AddBracers();
+            Assert.AreEqual("((1 * 5) * 2) + 9", result);
+        }
+
+        [Test]
+        public void AddBracers_MultiplyMultiplyPlus()
+        {
+            var input = "1 * 5 * 2 + 9";
+            var result = input.AddBracers();
+            Assert.AreEqual("((1 * 5) * 2) + 9", result);
+        }
+
+        [Test]
         public void AddSpacebars()
         {
             var input = "1+5";
