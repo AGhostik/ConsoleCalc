@@ -54,5 +54,16 @@ namespace Tests
             ExpressionUnit.TryParse(input, out var expressionUnit);
             return expressionUnit.FirstValue.GetType();
         }
+
+        [TestCase("1 + 2", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("-1 + -2", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("1 + (2 - 1)", ExpectedResult = typeof(ExpressionUnit))]
+        [TestCase("(1 + 2) + 1", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("(1 + 5) * (2 - 1)", ExpectedResult = typeof(ExpressionUnit))]
+        public Type TryParse_SecondValueType(string input)
+        {
+            ExpressionUnit.TryParse(input, out var expressionUnit);
+            return expressionUnit.SecondValue.GetType();
+        }
     }
 }
