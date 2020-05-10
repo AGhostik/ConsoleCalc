@@ -6,92 +6,41 @@ namespace Tests
     [TestFixture]
     public class StringExtensionsTests
     {
-        [Test]
-        public void AddBracers_PlusMultiply()
+        [TestCase("1 + 5 * 2", ExpectedResult = "1 + (5 * 2)")]
+        [TestCase("1 + 7 * 2", ExpectedResult = "1 + (7 * 2)")]
+        [TestCase("1 * 5 + 2", ExpectedResult = "(1 * 5) + 2")]
+        [TestCase("1 * (5 + 2)", ExpectedResult = "1 * (5 + 2)")]
+        [TestCase("1 * 5 + 2 * 9", ExpectedResult = "(1 * 5) + (2 * 9)")]
+        [TestCase("(1 * 5) * 2 + 9", ExpectedResult = "((1 * 5) * 2) + 9")]
+        [TestCase("1 * 5 * 2 + 9", ExpectedResult = "((1 * 5) * 2) + 9")]
+        public string AddBracers(string input)
         {
-            var input = "1 + 5 * 2";
-            var result = input.AddBracers();
-            Assert.AreEqual("1 + (5 * 2)", result);
+            return input.AddBracers();
+        }
+        
+        [TestCase("1+5", ExpectedResult = "1 + 5")]
+        public string AddSpacebars(string input)
+        {
+            return input.AddSpacebars();
         }
 
-        [Test]
-        public void AddBracers_MultiplyPlus()
+        [TestCase("1 + ----5", ExpectedResult = "1 + 5")]
+        [TestCase("1 + ---5", ExpectedResult = "1 + -5")]
+        public string RemoveExcessLeadingSigns(string input)
         {
-            var input = "1 * 5 + 2";
-            var result = input.AddBracers();
-            Assert.AreEqual("(1 * 5) + 2", result);
+            return input.RemoveExcessLeadingSign();
+        }
+        
+        [TestCase("1 +     5", ExpectedResult = "1 + 5")]
+        public string RemoveExcessSpacebar(string input)
+        {
+            return input.RemoveExcessSpacebar();
         }
 
-        [Test]
-        public void AddBracers_MultiplyPlus_PlusInBracers()
+        [TestCase("--1/        ----5 + 4", ExpectedResult = "(1 / 5) + 4")]
+        public string RemoveExcessSpacebar_RemoveExcessLeadingSign_AddSpacebars_AddBracers(string input)
         {
-            var input = "1 * (5 + 2)";
-            var result = input.AddBracers();
-            Assert.AreEqual("1 * (5 + 2)", result);
-        }
-
-        [Test]
-        public void AddBracers_MultiplyPlusMultiply()
-        {
-            var input = "1 * 5 + 2 * 9";
-            var result = input.AddBracers();
-            Assert.AreEqual("(1 * 5) + (2 * 9)", result);
-        }
-
-        [Test]
-        public void AddBracers_BracersMultiplyMultiplyPlus()
-        {
-            var input = "(1 * 5) * 2 + 9";
-            var result = input.AddBracers();
-            Assert.AreEqual("((1 * 5) * 2) + 9", result);
-        }
-
-        [Test]
-        public void AddBracers_MultiplyMultiplyPlus()
-        {
-            var input = "1 * 5 * 2 + 9";
-            var result = input.AddBracers();
-            Assert.AreEqual("((1 * 5) * 2) + 9", result);
-        }
-
-        [Test]
-        public void AddSpacebars()
-        {
-            var input = "1+5";
-            var result = input.AddSpacebars();
-            Assert.AreEqual("1 + 5", result);
-        }
-
-        [Test]
-        public void RemoveExcessLeadingSigns_HaveEvenNumberOfLeadingSign()
-        {
-            var input = "1 + ----5";
-            var result = input.RemoveExcessLeadingSign();
-            Assert.AreEqual("1 + 5", result);
-        }
-
-        [Test]
-        public void RemoveExcessLeadingSigns_HaveOddNumberOfLeadingSign()
-        {
-            var input = "1 + ---5";
-            var result = input.RemoveExcessLeadingSign();
-            Assert.AreEqual("1 + -5", result);
-        }
-
-        [Test]
-        public void RemoveExcessSpacebar()
-        {
-            var input = "1 +     5";
-            var result = input.RemoveExcessSpacebar();
-            Assert.AreEqual("1 + 5", result);
-        }
-
-        [Test]
-        public void RemoveExcessSpacebar_RemoveExcessLeadingSign_AddSpacebars_AddBracers()
-        {
-            var input = "--1/        ----5 + 4";
-            var result = input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars().AddBracers();
-            Assert.AreEqual("(1 / 5) + 4", result);
+            return input.RemoveExcessSpacebar().RemoveExcessLeadingSign().AddSpacebars().AddBracers();
         }
     }
 }
