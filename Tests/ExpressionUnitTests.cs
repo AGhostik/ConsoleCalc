@@ -1,4 +1,4 @@
-﻿using ConsoleCalc;
+﻿using System;
 using ConsoleCalc.Models;
 using NUnit.Framework;
 
@@ -7,285 +7,52 @@ namespace Tests
     [TestFixture]
     public class ExpressionUnitTests
     {
-        [Test]
-        public void GetValue_Addition_Decimal()
+        [TestCase(1, Operation.Plus, 2, ExpectedResult = 3)]
+        [TestCase(1.1, Operation.Plus, 1.2, ExpectedResult = 2.3)]
+        [TestCase(1, Operation.Minus, 2, ExpectedResult = -1)]
+        [TestCase(3.3, Operation.Minus, 1.1, ExpectedResult = 2.2)]
+        [TestCase(2, Operation.Multiply, 2, ExpectedResult = 4)]
+        [TestCase(1.5, Operation.Multiply, 3.3, ExpectedResult = 4.95)]
+        [TestCase(6, Operation.Div, 3, ExpectedResult = 2)]
+        [TestCase(8.2, Operation.Div, 1.6, ExpectedResult = 5.125)]
+        [TestCase(6, Operation.DivRem, 4, ExpectedResult = 2)]
+        [TestCase(7.8, Operation.DivRem, 5.2, ExpectedResult = 2.6)]
+        public decimal GetResult(decimal firstValue, Operation operation, decimal secondValue)
         {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(1.1M), Operation.Plus, new ValueUnit(1.2M));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(2.3, result);
+            var expressionUnit = new ExpressionUnit(new ValueUnit(firstValue), operation, new ValueUnit(secondValue));
+            return expressionUnit.GetResult();
         }
         
-        [Test]
-        public void GetValue_Addition_Integer()
+        [TestCase("1 + 2", ExpectedResult = Operation.Plus)]
+        [TestCase("1 - 2", ExpectedResult = Operation.Minus)]
+        [TestCase("1 * 2", ExpectedResult = Operation.Multiply)]
+        [TestCase("1 / 2", ExpectedResult = Operation.Div)]
+        [TestCase("1 % 2", ExpectedResult = Operation.DivRem)]
+        [TestCase("(1 - 5) + 2", ExpectedResult = Operation.Plus)]
+        [TestCase("(1 * 5) - 2", ExpectedResult = Operation.Minus)]
+        [TestCase("(1 - 5) * 2", ExpectedResult = Operation.Multiply)]
+        [TestCase("(1 + 5) / 2", ExpectedResult = Operation.Div)]
+        [TestCase("(1 + 5) % 2", ExpectedResult = Operation.DivRem)]
+        [TestCase("(3 + 8) + (2 - 1)", ExpectedResult = Operation.Plus)]
+        [TestCase("(3 + 8) - (2 - 1)", ExpectedResult = Operation.Minus)]
+        [TestCase("(3 + 8) * (2 - 1)", ExpectedResult = Operation.Multiply)]
+        [TestCase("(3 + 8) / (2 - 1)", ExpectedResult = Operation.Div)]
+        [TestCase("(3 + 8) % (2 - 1)", ExpectedResult = Operation.DivRem)]
+        public Operation TryParse_Operation(string input)
         {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(1), Operation.Plus, new ValueUnit(2));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(3, result);
-        }
-
-        [Test]
-        public void GetValue_Division_Decimal()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(8.2M), Operation.Div, new ValueUnit(1.6M));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(5.125, result);
-        }
-
-        [Test]
-        public void GetValue_Division_Integer()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(6), Operation.Div, new ValueUnit(3));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(2, result);
-        }
-
-        [Test]
-        public void GetValue_DivRemainder_Decimal()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(7.8M), Operation.DivRem, new ValueUnit(5.2M));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(2.6, result);
-        }
-
-        [Test]
-        public void GetValue_DivRemainder_Integer()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(6), Operation.DivRem, new ValueUnit(4));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(2, result);
-        }
-
-        [Test]
-        public void GetValue_Multiplication_Decimal()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(1.5M), Operation.Multiply, new ValueUnit(3.3M));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(4.95, result);
-        }
-
-        [Test]
-        public void GetValue_Multiplication_Integer()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(2), Operation.Multiply, new ValueUnit(2));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(4, result);
-        }
-
-        [Test]
-        public void GetValue_Subtraction_Decimal()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(3.3M), Operation.Minus, new ValueUnit(1.1M));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(2.2, result);
-        }
-
-        [Test]
-        public void GetValue_Subtraction_Integer()
-        {
-            var expressionUnit = new ExpressionUnit(new ValueUnit(1), Operation.Minus, new ValueUnit(2));
-            var result = expressionUnit.GetResult();
-            Assert.AreEqual(-1, result);
-        }
-
-        [Test]
-        public void TryParse_DivideOperation_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) / (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_DivideOperation_ExpressionAndValue()
-        {
-            var input = "(1 + 1) / 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_DivideOperation_ValueAndValue()
-        {
-            var input = "1 / 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Div, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_DivRemainderOperation_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) % (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_DivRemainderOperation_ExpressionAndValue()
-        {
-            var input = "(1 + 2) % 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_DivRemainderOperation_ValueAndValue()
-        {
-            var input = "1 % 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.DivRem, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_ExpressionBothValueIsExpression_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) * (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
-            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.SecondValue.GetType());
-        }
-
-        [Test]
-        public void TryParse_ExpressionBothValuesIsValueUnit_ValueAndValue()
-        {
-            var input = "1 + 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
-        }
-
-        [Test]
-        public void TryParse_ExpressionBothValuesIsValueUnit_ValueAndValue_Negative()
-        {
-            var input = "-1 + -2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
+            ExpressionUnit.TryParse(input, out var expressionUnit);
+            return expressionUnit.Operation;
         }
         
-        [Test]
-        public void TryParse_FirstValueIsExpression_ExpressionAndValue()
+        [TestCase("1 + 2", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("-1 + -2", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("1 + (2 - 1)", ExpectedResult = typeof(ValueUnit))]
+        [TestCase("(1 + 2) + 1", ExpectedResult = typeof(ExpressionUnit))]
+        [TestCase("(1 + 5) * (2 - 1)", ExpectedResult = typeof(ExpressionUnit))]
+        public Type TryParse_FirstValueType(string input)
         {
-            var input = "(1 + 2) + 1";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.FirstValue.GetType());
-        }
-
-        [Test]
-        public void TryParse_FirstValueIsValue_ExpressionAndValue()
-        {
-            var input = "1 + (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.FirstValue.GetType());
-        }
-
-        [Test]
-        public void TryParse_MinusOperation_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) - (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_MinusOperation_ExpressionAndValue()
-        {
-            var input = "(1 * 8) - 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_MinusOperation_ValueAndValue()
-        {
-            var input = "1 - 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Minus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_MultiplyOperation_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) * (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_MultiplyOperation_ExpressionAndValue()
-        {
-            var input = "(1 - 0) * 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_MultiplyOperation_ValueAndValue()
-        {
-            var input = "1 * 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Multiply, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_PlusOperation_ExpressionAndExpression()
-        {
-            var input = "(1 + 5) + (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_PlusOperation_ExpressionAndValue()
-        {
-            var input = "(1 - 5) + 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_PlusOperation_ValueAndValue()
-        {
-            var input = "1 + 2";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(Operation.Plus, expressionUnit.Operation);
-        }
-
-        [Test]
-        public void TryParse_SecondValueIsExpression_ExpressionAndValue()
-        {
-            var input = "1 + (2 - 1)";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ExpressionUnit), expressionUnit.SecondValue.GetType());
-        }
-
-        [Test]
-        public void TryParse_SecondValueIsValue_ExpressionAndValue()
-        {
-            var input = "(1 + 2) + 1";
-            var isSuccessfull = ExpressionUnit.TryParse(input, out var expressionUnit);
-            Assert.IsTrue(isSuccessfull);
-            Assert.AreEqual(typeof(ValueUnit), expressionUnit.SecondValue.GetType());
+            ExpressionUnit.TryParse(input, out var expressionUnit);
+            return expressionUnit.FirstValue.GetType();
         }
     }
 }
