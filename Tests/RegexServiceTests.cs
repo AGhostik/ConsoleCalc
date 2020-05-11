@@ -23,10 +23,11 @@ namespace Tests
             return match.Value;
         }
 
+        [TestCase("1+2", ExpectedResult = "1")]
         [TestCase("1 + 2", ExpectedResult = "1")]
         [TestCase("50 % 221", ExpectedResult = "50")]
         [TestCase("(1 * 3.1) - (2.5 / 4.01)", ExpectedResult = "(1 * 3.1)")]
-        [TestCase("3.9 / (2 / 4)", ExpectedResult = "3.9")]
+        [TestCase("3.9/(2 / 4)", ExpectedResult = "3.9")]
         [TestCase("(1000 * 3) * 4321.1", ExpectedResult = "(1000 * 3)")]
         public string FindExpressionParts_FirstValue(string input)
         {
@@ -35,10 +36,11 @@ namespace Tests
             return groups["firstValue"].Value;
         }
 
+        [TestCase("1+2", ExpectedResult = "2")]
         [TestCase("1 + 2", ExpectedResult = "2")]
         [TestCase("50 % 221", ExpectedResult = "221")]
         [TestCase("(1 * 3.1) - (2.5 / 4.01)", ExpectedResult = "(2.5 / 4.01)")]
-        [TestCase("3.9 / (2 / 4)", ExpectedResult = "(2 / 4)")]
+        [TestCase("3.9/(2 / 4)", ExpectedResult = "(2 / 4)")]
         [TestCase("(1000 * 3) * 4321.1", ExpectedResult = "4321.1")]
         public string FindExpressionParts_SecondValue(string input)
         {
