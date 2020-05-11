@@ -1,4 +1,5 @@
 ﻿using ConsoleCalc;
+using ConsoleCalc.Models;
 using NUnit.Framework;
 
 namespace Tests
@@ -49,14 +50,26 @@ namespace Tests
             return groups["secondValue"].Value;
         }
 
+        [TestCase("10*3+1", ExpectedResult = "3+1")]
+        [TestCase("10 * 3 + 1", ExpectedResult = "3 + 1")]
+        [TestCase("10.1 * 3.66 + 1", ExpectedResult = "3.66 + 1")]
+        [TestCase("13 + 66 * \"0\"", ExpectedResult = "13 + 66")]
+        [TestCase("13 + \"1\" * \"2\"", ExpectedResult = "13 + \"1\"")]
+        public string FindExpessionForBracersAdding_Plus(string input)
+        {
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Plus);
+            var matches = regex.Matches(input);
+            return matches[0].Value;
+        }
 
+        [TestCase("10*3+1", ExpectedResult = "10*3")]
         [TestCase("10 * 3 + 1", ExpectedResult = "10 * 3")]
         [TestCase("10.1 * 3.66 + 1", ExpectedResult = "10.1 * 3.66")]
         [TestCase("13 + 66 * \"0\"", ExpectedResult = "66 * \"0\"")]
         [TestCase("13 + \"1\" * \"2\"", ExpectedResult = "\"1\" * \"2\"")]
-        public string FindExpessionForBracersAdding(string input)
+        public string FindExpessionForBracersAdding_Multiply(string input)
         {
-            var regex = RegexService.GetRegex_FindExpessionForBracersAdding();
+            var regex = RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Multiply);
             var matches = regex.Matches(input);
             return matches[0].Value;
         }

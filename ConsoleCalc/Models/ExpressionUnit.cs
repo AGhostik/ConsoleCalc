@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using ConsoleCalc.Extensions;
 
 namespace ConsoleCalc.Models
 {
@@ -115,31 +116,7 @@ namespace ConsoleCalc.Models
 
         public override string ToString()
         {
-            string operationString;
-
-            switch (Operation)
-            {
-                case Operation.Plus:
-                    operationString = "+";
-                    break;
-                case Operation.Minus:
-                    operationString = "-";
-                    break;
-                case Operation.Div:
-                    operationString = "/";
-                    break;
-                case Operation.Multiply:
-                    operationString = "*";
-                    break;
-                case Operation.DivRem:
-                    operationString = "%";
-                    break;
-                default:
-                    operationString = "?";
-                    break;
-            }
-
-            return $"({FirstValue} {operationString} {SecondValue})";
+            return $"({FirstValue} {Operation.ToChar()} {SecondValue})";
         }
     }
 }

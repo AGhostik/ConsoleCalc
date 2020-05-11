@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using ConsoleCalc.Extensions;
+using ConsoleCalc.Models;
 
 namespace ConsoleCalc
 {
@@ -9,7 +8,7 @@ namespace ConsoleCalc
     {
         /// <summary>
         /// Для поиска выражений типа 'X [действие] Y', где:
-        /// <para>[действие] - это *, / или %</para>
+        /// <para>[действие] - это -, +, *, / или %</para>
         /// <para>X или Y - это число, отрицательное число, число в кавычках (например: "0"), другое аналогичное выражение 'A [действие] B' </para>
         /// <para>Число в кавычках нужно в качестве костыля, чтобы заменять ими выражения 'X [действие] Y' - таким образом одно и то же выражение не будет снова попадать под повторный поиск выражений в той же строке  на следующей итерации;</para>
         /// 
@@ -19,17 +18,13 @@ namespace ConsoleCalc
         /// <para>Reverce step2: '("0" * 3) + 4', match = '"0"', replacement = ( + '1 * 2' + ) --> '((1 * 2) * 3) + 4'</para>
         /// <para>Result: '1 * 2 * 3 + 4' --> '((1 * 2) * 3) + 4'</para>
         /// </summary>
-        /// <param name="operationIsMultiply">False - меняет поведение поиска, в котором [действие] становится + или -</param>
+        /// <param name="operation"></param>
         /// <returns></returns>
-        public static Regex GetRegex_FindExpessionForBracersAdding(bool operationIsMultiply = true)
+        public static Regex GetRegex_FindExpessionForBracersAdding(Operation operation)
         {
-            // есть ощущение что сделал какую-то костыльную ерунду, поэтому постарался описать ее подробно
-
-            // оставил два выражения new Regex(...), т.к. Resharper подсвечивает синтаксис паттерна
-            if(operationIsMultiply)
-                return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?)) (?<operation>[*/%]) (?<secondValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))");
-            else
-                return new Regex("(?<firstValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?)) (?<operation>[-+]) (?<secondValue>(\\(-?\\d*\\.?\\d* [-+*/%] -?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))");
+            var operationChar = operation.ToChar();
+            
+            return new Regex($"(?<firstValue>(\\(-?\\d*\\.?\\d*\\s*[-+*/%]\\s*-?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))\\s*(?<operation>[{operationChar}])\\s*(?<secondValue>(\\(-?\\d*\\.?\\d*\\s*[-+*/%]\\s*-?\\d*\\.?\\d*\\))|(\"?-?\\d*\\.?\\d*\"?))");
         }
 
         /// <summary>

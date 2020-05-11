@@ -34,6 +34,7 @@ namespace ConsoleCalc.Extensions
 
         public static string AddBracers(this string value)
         {
+            /*
             var regexMultiply = RegexService.GetRegex_FindExpessionForBracersAdding();
             
             var result = value;
@@ -97,6 +98,8 @@ namespace ConsoleCalc.Extensions
 
             //на самом деле тогда все выражение целиком будет закрыто в скобочки, поэтому нужно их удалить с помощью string.Substring
             return result.Substring(1, result.Length - 2);
+            */
+            return null;
         }
 
         public static string AddSpacebars(this string value)
