@@ -6,13 +6,13 @@ namespace Tests
     [TestFixture]
     public class StringExtensionsTests
     {
-        [TestCase("1 + 5 * 2", ExpectedResult = "1 + (5 * 2)")]
-        [TestCase("1 + 7 * 2", ExpectedResult = "1 + (7 * 2)")]
-        [TestCase("1 * 5 + 2", ExpectedResult = "(1 * 5) + 2")]
-        [TestCase("1 * (5 + 2)", ExpectedResult = "1 * (5 + 2)")]
-        [TestCase("1 * 5 + 2 * 9", ExpectedResult = "(1 * 5) + (2 * 9)")]
-        [TestCase("(1 * 5) * 2 + 9", ExpectedResult = "((1 * 5) * 2) + 9")]
-        [TestCase("1 * 5 * 2 + 9", ExpectedResult = "((1 * 5) * 2) + 9")]
+        [TestCase("1 + 5 * 2", ExpectedResult = "(1 + (5 * 2))")]
+        [TestCase("1 + 7 * 2", ExpectedResult = "(1 + (7 * 2))")]
+        [TestCase("1 * 5 + 2", ExpectedResult = "((1 * 5) + 2)")]
+        [TestCase("1 * (5 + 2)", ExpectedResult = "(1 * (5 + 2))")] // не проходит
+        [TestCase("1 * 5 + 2 * 9", ExpectedResult = "((1 * 5) + (2 * 9))")]
+        [TestCase("(1 * 5) * 2 + 9", ExpectedResult = "(((1 * 5) * 2) + 9)")] // не проходит
+        [TestCase("1 * 5 * 2 + 9", ExpectedResult = "(((1 * 5) * 2) + 9)")]
         public string AddBracers(string input)
         {
             return input.AddBracers();

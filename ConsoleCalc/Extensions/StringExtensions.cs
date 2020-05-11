@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using ConsoleCalc.Models;
 
 namespace ConsoleCalc.Extensions
 {
@@ -32,74 +34,74 @@ namespace ConsoleCalc.Extensions
             return result;
         }
 
+        /// <summary>
+        /// Поиск выражений и замена на "guid"; Возвращает строку-результат и список замен [guid, "выражение"]
+        /// </summary>
+        /// <param name="regex"></param>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private static (string result, IEnumerable<KeyValuePair<string, string>> replacements) ReplaceExpressions(Regex regex, string input)
+        {
+            var result = input;
+            var replacements = new Dictionary<string, string>();
+            var matches = regex.Matches(result).ToArray();
+            while (matches.Any())
+            {
+                foreach (var match in matches)
+                {
+                    var replacementKey = $"\"{GuidService.NewGuid()}\"";
+                    replacements.Add(replacementKey, match.Value);
+                    result = regex.Replace(result, m => replacementKey, 1, match.Index);
+                }
+
+                matches = regex.Matches(result).ToArray();
+            }
+
+            return (result, replacements);
+        }
+
         public static string AddBracers(this string value)
         {
-            /*
-            var regexMultiply = RegexService.GetRegex_FindExpessionForBracersAdding();
-            
+            //это все нужно для того чтобы каждую операцию закрыть в скобочки для парсера
+            //например: '1 * 5 + 3 * 2 + 1' => '((1 * 5) + (3 * 2)) + 1'
             var result = value;
 
             // key = {"X"} , value = {1 + 1}
             var replacements = new Dictionary<string, string>();
-            var replacementCounter = 0;
 
-            //это все нужно для того чтобы каждую операцию закрыть в скобочки для парсера
-            //например: '1 * 5 + 3 * 2 + 1' => '((1 * 5) + (3 * 2)) + 1'
+            Replace(RegexService.GetRegex_FindExpessionForBracersAdding(Operation.DivRem));
+            Replace(RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Div));
+            Replace(RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Multiply));
+            Replace(RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Minus));
+            Replace(RegexService.GetRegex_FindExpessionForBracersAdding(Operation.Plus));
 
-            // поиск выражений с умножением, делением или остатком от деления, и замена на [числа в кавычках]
-            var matches = regexMultiply.Matches(result).ToArray();
-            while (matches.Any())
+            void Replace(Regex regex)
             {
-                foreach (var match in matches)
+                var (s, keyValuePairs) = ReplaceExpressions(regex, result);
+                result = s;
+                foreach (var pair in keyValuePairs)
                 {
-                    var replacementKey = $"\"{replacementCounter}\"";
-                    replacementCounter++;
-                    replacements.Add(replacementKey, match.Value);
-                    result = regexMultiply.Replace(result, m => replacementKey, 1, match.Index);
+                    replacements.Add(pair.Key, pair.Value);
                 }
-
-                matches = regexMultiply.Matches(result).ToArray();
             }
 
-            //todo: эти два куска кода while{...} можно заменить на один приватный метод
-
-            // поиск выражений со сложением или вычитанием, и замена на [числа в кавычках]
-            var regexPlusMinus = RegexService.GetRegex_FindExpessionForBracersAdding(false);
-            matches = regexPlusMinus.Matches(result).ToArray();
-            while (matches.Any())
-            {
-                foreach (var match in matches)
-                {
-                    var replacementKey = $"\"{replacementCounter}\"";
-                    replacementCounter++;
-                    replacements.Add(replacementKey, match.Value);
-                    result = regexPlusMinus.Replace(result, m => replacementKey, 1, match.Index);
-                }
-
-                matches = regexPlusMinus.Matches(result).ToArray();
-            }
-            
             // востанавливаем выражения
-            // постепенно возвращаем на место [чисел в кавычках] выражения, дополнительно обрамляя их в скобочки
-            var regexReplacements = new Regex("\"\\d\"");
-            var replacementsMatches = regexReplacements.Matches(result).ToArray();
+            var findGuid = RegexService.GetRegex_FindGuid();
+            var replacementsMatches = findGuid.Matches(result).ToArray();
             while (replacementsMatches.Any())
             {
                 foreach (var match in replacementsMatches)
                 {
-                    result = regexReplacements.Replace(result, m =>
+                    result = findGuid.Replace(result, m =>
                     {
                         var replacement = replacements[match.Value];
                         return $"({replacement})";
                     }, 1, match.Index);
                 }
-                replacementsMatches = regexReplacements.Matches(result).ToArray();
+                replacementsMatches = findGuid.Matches(result).ToArray();
             }
 
-            //на самом деле тогда все выражение целиком будет закрыто в скобочки, поэтому нужно их удалить с помощью string.Substring
-            return result.Substring(1, result.Length - 2);
-            */
-            return null;
+            return result;
         }
 
         public static string AddSpacebars(this string value)

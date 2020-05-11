@@ -24,7 +24,7 @@ namespace ConsoleCalc
         {
             var operationChar = operation.ToChar();
             
-            return new Regex($"(?<firstValue>[(]-?\\d+\\.?\\d+\\s*[-+*/%]\\s*-?\\d+\\.?\\d+[)]|-?\\d+\\.?\\d+|-?\\d+|\"[a-z\\d-]+\")\\s*(?<operation>[{operationChar}])\\s*(?<secondValue>[(]-?\\d+\\.?\\d+\\s*[-+*/%]\\s*-?\\d+\\.?\\d+[)]|-?\\d+\\.?\\d+|-?\\d+|\"[a-z\\d-]+\")");
+            return new Regex($"(?<firstValue>[(]-?\\d+\\.?\\d+\\s*[-+*/%]\\s*-?\\d+\\.?\\d+[)]|-?\\d+\\.?\\d+|-?\\d+|\"[a-z\\d_]+\")\\s*(?<operation>[{operationChar}])\\s*(?<secondValue>[(]-?\\d+\\.?\\d+\\s*[-+*/%]\\s*-?\\d+\\.?\\d+[)]|-?\\d+\\.?\\d+|-?\\d+|\"[a-z\\d_]+\")");
         }
 
         /// <summary>
@@ -43,6 +43,15 @@ namespace ConsoleCalc
         public static Regex GetRegex_FindMultipleMinusSymbol()
         {
             return new Regex("[-]{2,}");
+        }
+
+        /// <summary>
+        /// Находит Guid в кавычках
+        /// </summary>
+        /// <returns></returns>
+        public static Regex GetRegex_FindGuid()
+        {
+            return new Regex("\"[a-z\\d_]+\"");
         }
 
         /// <summary>
